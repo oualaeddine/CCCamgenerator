@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CCCam generator</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="links">
+        <item>http://cccammania.com/free4/get2.php</item>
+        <item>http://freeccamserver.com/free/get2.php</item>
+        <item>http://cccamgood.com/free/get2.php</item>
+        <item>http://cccamgenerador.com/gratis/get2.php</item>
+    </string-array>
+    <!-- AdMob ad unit IDs -->
+    <string name="banner_home_footer">ca-app-pub-6130661642720915/4825571419</string>
+    <string name="id_app_admob">ca-app-pub-6130661642720915~4100002477</string>
+    <string name="title_activity_main">CCCam generator</string>
+
+</resources>
