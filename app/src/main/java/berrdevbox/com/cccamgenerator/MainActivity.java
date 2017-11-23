@@ -1,6 +1,9 @@
 package berrdevbox.com.cccamgenerator;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -17,6 +20,9 @@ import android.webkit.WebViewClient;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -40,6 +46,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Context context = this;
+        Intent intent = new Intent(context, AdService.class);
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        //context.startService(intent);
 /*
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
@@ -54,11 +65,35 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        MobileAds.initialize(this, getString(R.string.ad_app_id));
 
         mAdView = (AdView) findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder()
                 .build();
         mAdView.loadAd(adRequest);
+        startRepeatingTask();
+    }
+
+
+    private final static int INTERVAL = 1000 * 60 * 3; //2 minutes
+    Handler mHandler = new Handler();
+
+    Runnable mHandlerTask = new Runnable() {
+        @Override
+        public void run() {
+            refreshAdd();
+            mHandler.postDelayed(mHandlerTask, INTERVAL);
+        }
+    };
+
+    private void refreshAdd() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
+    }
+
+    void startRepeatingTask() {
+        mHandlerTask.run();
     }
 
 
@@ -187,13 +222,13 @@ public class MainActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "SECTION 1";
+                    return "Server 1";
                 case 1:
-                    return "SECTION 2";
+                    return "Server 2";
                 case 2:
-                    return "SECTION 3";
+                    return "Server 3";
                 case 3:
-                    return "SECTION 4";
+                    return "Server 4";
             }
             return null;
         }
